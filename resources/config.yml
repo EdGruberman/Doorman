@@ -15,7 +15,7 @@ language:
     history:
         body: '-> §8{2,date,yyyy MMM dd HH:mm} {1,choice,0#§7|1#§c* §f}{4} §8<§7{3}§8>' # 1 = Missed(0|1), 2 = Set, 3 = From Player Display Name, 4 = Text, 5 = Set Age, 6 = Index
         footer: '-> §8Page §7§l{1} §8of §7{2} §8(§7To view: §5/doorman <Page>§8)' # 1 = Current Page, 2 = Total Page Count
-    unknown-page: '-> §7Page §enot available§7: §f§o{1}'
+    unknown-page: '-> §7Page §enot available§7: §f§o{1,number,#}'
     no-message: '-> §7Server join message §f§o{1,number,#} §enot configured' # 1 = Index
     requires-argument: '-> §7Required §cargument missing§7: §7§o{1}' # 1 = Argument Name
     reload: '-> §7{1} plugin §2reloaded' # 1 = Plugin Name
