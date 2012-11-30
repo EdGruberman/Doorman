@@ -24,14 +24,14 @@ public final class Main extends CustomPlugin {
 
     @Override
     public void onLoad() {
-        this.putConfigMinimum(CustomPlugin.CONFIGURATION_FILE, "1.1.0");
+        this.putConfigMinimum(CustomPlugin.CONFIGURATION_FILE, "1.2.0");
         this.setPathSeparator('|');
     }
 
     @Override
     public void onEnable() {
         this.reloadConfig();
-        Main.courier = ConfigurationCourier.Factory.create(this).setPath("language").setColorCode("color-code").build();
+        Main.courier = ConfigurationCourier.Factory.create(this).setPath("language").setColorCode("+color-code").build();
 
         Long grace = this.getConfig().getLong("declaration-grace", -1);
         if (grace != -1) grace = TimeUnit.SECONDS.toMillis(grace);

@@ -32,7 +32,7 @@ public final class Change implements CommandExecutor {
         if (text == null) return false;
 
         final long set = System.currentTimeMillis();
-        final String from = (sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName());
+        final String from = (sender instanceof Player ? ((Player) sender).getDisplayName() : Main.courier.format("+console", sender.getName()));
 
         this.records.add(set, from, ChatColor.translateAlternateColorCodes('&', text));
         this.doorman.clearLast();
