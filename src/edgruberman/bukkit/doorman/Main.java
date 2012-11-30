@@ -23,7 +23,7 @@ public final class Main extends CustomPlugin {
 
     @Override
     public void onLoad() {
-        this.putConfigMinimum(CustomPlugin.CONFIGURATION_FILE, "0.0.0a0");
+        this.putConfigMinimum(CustomPlugin.CONFIGURATION_FILE, "1.0.1");
         this.setPathSeparator('|');
     }
 

@@ -24,7 +24,7 @@ public final class DeclarationSet implements CommandExecutor {
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (args.length == 0) {
-            Main.courier.send(sender, "require-argument", "<Message>");
+            Main.courier.send(sender, "requires-argument", "<Message>");
             return false;
         }
 

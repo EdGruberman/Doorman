@@ -15,8 +15,6 @@ language:
         - '-> §5|§r      §8{5} ago from {3}'
         - '§r-> §5§k#§5---------------------------------------------§k#'
     no-history: '-> §7Declaration §ehistory not available'
-    requires-player: '-> §cOnly in-game players§7 can use the {1} command' # 1 = Command Label
     requires-argument: '-> §7Required §cargument missing§7: §7§o{1}' # 1 = Argument Name
-    unknown-argument: '-> §eUnable to determine §o{1}§7: §f§o{2}' # 1 = Argument Name, 2 = Argument Value
     reload: '-> §7{1} plugin §2reloaded' # 1 = Plugin Name
 version: @VERSION@
