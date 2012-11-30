@@ -34,7 +34,9 @@ public final class Main extends CustomPlugin {
 
         final Map<String, String> switches = new HashMap<String, String>();
         final ConfigurationSection section = this.getConfig().getConfigurationSection("switches");
-        for (final String name : section.getKeys(false)) switches.put(name, section.getString(name));
+        if (section != null)
+            for (final String name : section.getKeys(false))
+                switches.put(name, section.getString(name));
 
         Long grace = this.getConfig().getLong("declaration-grace", -1);
         if (grace != -1) grace = TimeUnit.SECONDS.toMillis(grace);
