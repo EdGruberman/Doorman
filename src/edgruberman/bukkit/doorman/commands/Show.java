@@ -8,13 +8,13 @@ import edgruberman.bukkit.doorman.Doorman;
 import edgruberman.bukkit.doorman.Main;
 import edgruberman.bukkit.doorman.RecordKeeper;
 
-public final class DeclarationGet implements CommandExecutor {
+public final class Show implements CommandExecutor {
 
     private final Doorman doorman;
     private final RecordKeeper records;
     private final CommandExecutor declarationSet;
 
-    public DeclarationGet(final Doorman doorman, final RecordKeeper records, final CommandExecutor declarationSet) {
+    public Show(final Doorman doorman, final RecordKeeper records, final CommandExecutor declarationSet) {
         this.doorman = doorman;
         this.records = records;
         this.declarationSet = declarationSet;

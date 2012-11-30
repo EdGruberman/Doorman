@@ -11,12 +11,12 @@ import edgruberman.bukkit.doorman.Doorman;
 import edgruberman.bukkit.doorman.Main;
 import edgruberman.bukkit.doorman.RecordKeeper;
 
-public final class DeclarationSet implements CommandExecutor {
+public final class Change implements CommandExecutor {
 
     private final Doorman doorman;
     private final RecordKeeper records;
 
-    public DeclarationSet(final Doorman doorman, final RecordKeeper records) {
+    public Change(final Doorman doorman, final RecordKeeper records) {
         this.doorman = doorman;
         this.records = records;
     }
@@ -28,7 +28,7 @@ public final class DeclarationSet implements CommandExecutor {
             return false;
         }
 
-        final String text = DeclarationSet.join(args, " ");
+        final String text = Change.join(args, " ");
         if (text == null) return false;
 
         final long set = System.currentTimeMillis();

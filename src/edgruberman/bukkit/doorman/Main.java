@@ -11,9 +11,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 
-import edgruberman.bukkit.doorman.commands.DeclarationGet;
-import edgruberman.bukkit.doorman.commands.DeclarationSet;
+import edgruberman.bukkit.doorman.commands.Change;
 import edgruberman.bukkit.doorman.commands.Reload;
+import edgruberman.bukkit.doorman.commands.Show;
 import edgruberman.bukkit.doorman.messaging.ConfigurationCourier;
 import edgruberman.bukkit.doorman.util.CustomPlugin;
 
@@ -46,9 +46,9 @@ public final class Main extends CustomPlugin {
                 , this.parseGreetingSwitches(switches, "greeting.headers"), this.parseGreetingSwitches(switches, "greeting.arguments"), grace);
         Bukkit.getPluginManager().registerEvents(doorman, this);
 
-        final CommandExecutor declarationSet = new DeclarationSet(doorman, records);
-        this.getCommand("doorman:declaration.set").setExecutor(declarationSet);
-        this.getCommand("doorman:declaration.get").setExecutor(new DeclarationGet(doorman, records, declarationSet));
+        final CommandExecutor declarationSet = new Change(doorman, records);
+        this.getCommand("doorman:change").setExecutor(declarationSet);
+        this.getCommand("doorman:show").setExecutor(new Show(doorman, records, declarationSet));
         this.getCommand("doorman:reload").setExecutor(new Reload(this));
     }
 

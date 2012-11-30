@@ -5,15 +5,15 @@ author: EdGruberman (ed@rjump.com)
 website: http://github.com/EdGruberman/Doorman
 main: edgruberman.bukkit.doorman.Main
 commands:
-    'doorman:declaration.get':
-        aliases: [declaration, declaration.get, motd]
+    'doorman:show':
+        aliases: [doorman, doorman.show, motd]
         description: View or change the server join declaration
-        permission: doorman.declaration.get
+        permission: doorman.show
         usage: /<command>[ <Message>]
-    'doorman:declaration.set':
-        aliases: [declaration.set, motd.set]
+    'doorman:change':
+        aliases: [doorman.change]
         description: Change the server join declaration
-        permission: doorman.declaration.set
+        permission: doorman.change
         usage: /<command> <Message>
     'doorman:reload':
         description: Reload Doorman plugin
@@ -25,18 +25,18 @@ permissions:
         default: op
         children:
             doorman.user: true
-            doorman.declaration.set: true
+            doorman.change: true
             doorman.reload: true
     doorman.user:
         description: Can use basic features of plugin
         default: true
         children:
-            doorman.declaration.get: true
-    doorman.declaration.get:
-        description: Can use declaration.get command
+            doorman.show: true
+    doorman.show:
+        description: Can use show command
         default: false
-    doorman.declaration.set:
-        description: Can use declaration.set command
+    doorman.change:
+        description: Can use change command
         default: false
     doorman.reload:
         description: Can use reload command
