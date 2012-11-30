@@ -1,0 +1,43 @@
+name: Doorman
+version: @VERSION@
+description: Sends players messages when they join the game
+author: EdGruberman (ed@rjump.com)
+website: http://github.com/EdGruberman/Doorman
+main: edgruberman.bukkit.doorman.Main
+commands:
+    'doorman:declaration.get':
+        aliases: [declaration, declaration.get, motd]
+        description: View or change the server join declaration
+        permission: doorman.declaration.get
+        usage: /<command>[ <Message>]
+    'doorman:declaration.set':
+        aliases: [declaration.set, motd.set]
+        description: Change the server join declaration
+        permission: doorman.declaration.set
+        usage: /<command> <Message>
+    'doorman:reload':
+        description: Reload Doorman plugin
+        permission: doorman.reload
+        usage: /<command>
+permissions:
+    doorman.admin:
+        description: Can use all features of plugin
+        default: op
+        children:
+            doorman.user: true
+            doorman.declaration.set: true
+            doorman.reload: true
+    doorman.user:
+        description: Can use basic features of plugin
+        default: true
+        children:
+            doorman.declaration.get: true
+    doorman.declaration.get:
+        description: Can use declaration.get command
+        default: false
+    doorman.declaration.set:
+        description: Can use declaration.set command
+        default: false
+    doorman.reload:
+        description: Can use reload command
+        default: false
