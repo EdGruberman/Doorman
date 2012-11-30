@@ -52,7 +52,7 @@ public final class RecordKeeper {
     }
 
     public List<Message> getHistory() {
-        return this.history;
+        return Collections.unmodifiableList(this.history);
     }
 
     public void add(final long set, final String from, final String text) {
