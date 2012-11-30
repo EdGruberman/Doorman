@@ -12,27 +12,29 @@ public final class Show implements CommandExecutor {
 
     private final Doorman doorman;
     private final RecordKeeper records;
-    private final CommandExecutor declarationSet;
 
-    public Show(final Doorman doorman, final RecordKeeper records, final CommandExecutor declarationSet) {
+    public Show(final Doorman doorman, final RecordKeeper records) {
         this.doorman = doorman;
         this.records = records;
-        this.declarationSet = declarationSet;
     }
 
+    // usage: /<command>[ <Index>]
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        if (args.length >= 1)
-            return this.declarationSet.onCommand(sender, command, label, args);
-
-        if (this.records.getHistory().size() == 0) {
-            Main.courier.send(sender, "no-history");
+        final int index = ( args.length == 0 ? 0 : Show.parseInt(args[0], 0));
+        if (this.records.getHistory().size() <= index) {
+            Main.courier.send(sender, "no-message", index);
             return true;
         }
 
-        this.records.declare(sender);
-        this.doorman.updateLast(sender.getName());
+        this.records.declare(sender, this.records.getHistory().get(index));
+        if (index == 0) this.doorman.updateLast(sender.getName());
         return true;
+    }
+
+    private static Integer parseInt(final String s, final Integer def) {
+        try { return Integer.parseInt(s);
+        } catch (final NumberFormatException e) { return def; }
     }
 
 }

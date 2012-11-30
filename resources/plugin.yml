@@ -5,14 +5,19 @@ author: EdGruberman (ed@rjump.com)
 website: http://github.com/EdGruberman/Doorman
 main: edgruberman.bukkit.doorman.Main
 commands:
+    'doorman:history':
+        aliases: [doorman, doorman.history]
+        description: View server join messages
+        permission: doorman.history
+        usage: /<command>[ <Page>]
     'doorman:show':
-        aliases: [doorman, doorman.show, motd]
-        description: View or change the server join declaration
+        aliases: [doorman.show, motd]
+        description: Formats server join message
         permission: doorman.show
-        usage: /<command>[ <Message>]
+        usage: /<command>[ <Index>]
     'doorman:change':
         aliases: [doorman.change]
-        description: Change the server join declaration
+        description: Change the server join message
         permission: doorman.change
         usage: /<command> <Message>
     'doorman:reload':
@@ -32,11 +37,15 @@ permissions:
         default: true
         children:
             doorman.show: true
+            doorman.history: true
     doorman.show:
         description: Can use show command
         default: false
     doorman.change:
         description: Can use change command
+        default: false
+    doorman.history:
+        description: Can use history command
         default: false
     doorman.reload:
         description: Can use reload command

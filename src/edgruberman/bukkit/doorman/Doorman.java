@@ -23,36 +23,40 @@ public final class Doorman implements Listener, Runnable {
 
     private static final long TICKS_PER_SECOND = 20;
 
-    /** permission dependent messages (keyed by permission name) */
     private final RecordKeeper records;
-    private final Map<String, String> switches = new HashMap<String, String>();
+    private final long grace;
+
+    /** permission dependent messages (keyed by permission name) */
+    private final Map<String, Object> switches = new HashMap<String, Object>();
+
     private final List<String> headers  = new ArrayList<String>();
     private final List<String> arguments  = new ArrayList<String>();
-    private final long grace;
     private final Map<String, Long> lastDeclaration = new HashMap<String, Long>();
     private final Plugin plugin;
 
-    Doorman(final Plugin plugin, final RecordKeeper records, final Map<String, String> switches, final List<String> headers, final List<String> arguments, final long grace) {
+    Doorman(final Plugin plugin, final RecordKeeper records, final long grace, final Map<String, Object> switches, final List<String> headers, final List<String> arguments) {
         this.plugin = plugin;
         this.records = records;
+        this.grace = grace;
         this.switches.putAll(switches);
         this.headers.addAll(headers);
         this.arguments.addAll(arguments);
-        this.grace = grace;
+
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent join) {
         // headers - always displayed, if player has permission, each on separate line
         for (final String header : this.headers) {
-            final String value = this.switchFor(join.getPlayer(), header);
-            if (value.length() > 0) Main.courier.sendMessage(join.getPlayer(), "{1}", value);
+            final Object value = this.switchFor(join.getPlayer(), header);
+            if (value.toString().length() > 0) Main.courier.sendMessage(join.getPlayer(), "{1}", value);
         }
 
         // greeting - always displayed, switches appended as arguments, empty strings if player does not have permission
         final String serverAge = Bukkit.getWorlds().get(0).getFullTime() / 20 / 86400 + " days";
         long serverSize = 0; for (final World world : Bukkit.getWorlds()) serverSize += Doorman.directorySize(world.getWorldFolder());
-        final List<String> args = new ArrayList<String>();
+        final List<Object> args = new ArrayList<Object>();
         args.add(serverAge);
         args.add(Doorman.readableFileSize(serverSize));
         for (final String argument : this.arguments) args.add(this.switchFor(join.getPlayer(), argument));
@@ -64,6 +68,10 @@ public final class Doorman implements Listener, Runnable {
         if ((last != null) && ((System.currentTimeMillis() - last) <= this.grace)) return;
         this.records.declare(join.getPlayer());
         this.updateLast(join.getPlayer().getName());
+
+        // missed - excluding the declaration just sent, check if at least the previous one was missed
+        if (this.records.getHistory().size() > 1 && join.getPlayer().getLastPlayed() < this.records.getHistory().get(1).set)
+            Main.courier.send(join.getPlayer(), "missed");
     }
 
     @EventHandler
@@ -91,8 +99,8 @@ public final class Doorman implements Listener, Runnable {
         this.lastDeclaration.put(name, System.currentTimeMillis());
     }
 
-    private String switchFor(final Permissible target, final String name) {
-        final String value = this.switches.get(name);
+    private Object switchFor(final Permissible target, final String name) {
+        final Object value = this.switches.get(name);
         return (value != null && target.hasPermission(name) ? value : "");
     }
 

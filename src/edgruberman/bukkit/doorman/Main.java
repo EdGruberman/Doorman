@@ -1,17 +1,18 @@
 package edgruberman.bukkit.doorman;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 
 import edgruberman.bukkit.doorman.commands.Change;
+import edgruberman.bukkit.doorman.commands.History;
 import edgruberman.bukkit.doorman.commands.Reload;
 import edgruberman.bukkit.doorman.commands.Show;
 import edgruberman.bukkit.doorman.messaging.ConfigurationCourier;
@@ -23,7 +24,7 @@ public final class Main extends CustomPlugin {
 
     @Override
     public void onLoad() {
-        this.putConfigMinimum(CustomPlugin.CONFIGURATION_FILE, "1.0.1");
+        this.putConfigMinimum(CustomPlugin.CONFIGURATION_FILE, "1.1.0");
         this.setPathSeparator('|');
     }
 
@@ -32,32 +33,31 @@ public final class Main extends CustomPlugin {
         this.reloadConfig();
         Main.courier = ConfigurationCourier.Factory.create(this).setPath("language").setColorCode("color-code").build();
 
-        final Map<String, String> switches = new HashMap<String, String>();
-        final ConfigurationSection section = this.getConfig().getConfigurationSection("switches");
-        if (section != null)
-            for (final String name : section.getKeys(false))
-                switches.put(name, section.getString(name));
-
         Long grace = this.getConfig().getLong("declaration-grace", -1);
         if (grace != -1) grace = TimeUnit.SECONDS.toMillis(grace);
 
-        final RecordKeeper records = new RecordKeeper(this);
-        final Doorman doorman = new Doorman(this, records, switches
-                , this.parseGreetingSwitches(switches, "greeting.headers"), this.parseGreetingSwitches(switches, "greeting.arguments"), grace);
-        Bukkit.getPluginManager().registerEvents(doorman, this);
+        final Map<String, Object> switches = new HashMap<String, Object>();
+        final ConfigurationSection section = this.getConfig().getConfigurationSection("switches");
+        if (section != null) switches.putAll(section.getValues(false));
 
-        final CommandExecutor declarationSet = new Change(doorman, records);
-        this.getCommand("doorman:change").setExecutor(declarationSet);
-        this.getCommand("doorman:show").setExecutor(new Show(doorman, records, declarationSet));
+        final RecordKeeper records = new RecordKeeper(this);
+        final Doorman doorman = new Doorman(this, records, grace, switches
+                , this.parseGreetingSwitches(switches.keySet(), "greeting|headers"), this.parseGreetingSwitches(switches.keySet(), "greeting|arguments"));
+
+        this.getCommand("doorman:history").setExecutor(new History(records));
+        this.getCommand("doorman:show").setExecutor(new Show(doorman, records));
+        this.getCommand("doorman:change").setExecutor(new Change(doorman, records));
         this.getCommand("doorman:reload").setExecutor(new Reload(this));
     }
 
-    private List<String> parseGreetingSwitches(final Map<String, String> switches, final String path) {
+    private List<String> parseGreetingSwitches(final Collection<String> recognized, final String path) {
         final List<String> values = this.getConfig().getStringList(path);
+        if (values == null) return Collections.emptyList();
+
         final Iterator<String> it = values.iterator();
         while (it.hasNext()) {
             final String name = it.next();
-            if (switches.containsKey(name)) continue;
+            if (recognized.contains(name)) continue;
             this.getLogger().warning("Unrecognized switch specified in " + path + ": " + name);
             it.remove();
         }

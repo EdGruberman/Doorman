@@ -83,7 +83,7 @@ public final class RecordKeeper {
         }
     }
 
-    private static String duration(final long milliseconds) {
+    public static String duration(final long milliseconds) {
         final long totalSeconds = milliseconds / 1000;
         final long days = totalSeconds / 86400;
         final long hours = (totalSeconds % 86400) / 3600;
@@ -100,15 +100,15 @@ public final class RecordKeeper {
 
 
 
-    private static class Message {
+    public final static class Message {
 
         static final NewestFirst NEWEST_FIRST = new NewestFirst();
 
-        final Long set;
-        final String from;
-        final String text;
+        public final Long set;
+        public final String from;
+        public final String text;
 
-        Message(final long set, final String from, final String text) {
+        private Message(final long set, final String from, final String text) {
             this.set = set;
             this.from = from;
             this.text = text;
