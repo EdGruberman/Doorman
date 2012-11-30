@@ -15,11 +15,11 @@ import org.bukkit.plugin.Plugin;
  * uses message patterns stored in a {@link org.bukkit.configuration.ConfigurationSection ConfigurationSection}
  *
  * @author EdGruberman (ed@rjump.com)
- * @version 4.4.0
+ * @version 4.4.1
  */
 public class ConfigurationCourier extends Courier {
 
-    /** section containing message patterns; null if basePath should be used */
+    /** section containing message patterns */
     protected final ConfigurationSection base;
 
     protected ConfigurationCourier(final ConfigurationCourier.Factory parameters) {
@@ -42,7 +42,7 @@ public class ConfigurationCourier extends Courier {
         }
 
         if (!this.base.isList(key)) {
-            this.plugin.getLogger().log(Level.FINEST, "Unusable Message pattern \"{1}\" at \"{0}\" key", new Object[] { this.base.get(key), key });
+            this.plugin.getLogger().log(Level.FINEST, "Unusable Message pattern \"{1}\" at \"{2}{3}{0}\" key", new Object[] { key, this.base.get(key), this.base.getCurrentPath(), this.base.getRoot().options().pathSeparator() });
             return Collections.emptyList();
         }
 
