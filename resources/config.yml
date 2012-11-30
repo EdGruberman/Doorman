@@ -13,7 +13,7 @@ language:
         - '§r-> §5§k#§5---------------------------------------------§k#'
     missed: '-> §c* §7You missed messages §8(§7To view: §5/doorman§8)'
     history:
-        body: '-> §7{2,date,yyyy MMM dd HH:mm} {1,choice,0#§7|1#§c* §f}{4} §8<§7{3}§8>' # 1 = Missed(0|1), 2 = Set, 3 = From Player Display Name, 4 = Text, 5 = Set Age, 6 = Index
+        body: '-> §8{2,date,yyyy MMM dd HH:mm} {1,choice,0#§7|1#§c* §f}{4} §8<§7{3}§8>' # 1 = Missed(0|1), 2 = Set, 3 = From Player Display Name, 4 = Text, 5 = Set Age, 6 = Index
         footer: '-> §8Page §7§l{1} §8of §7{2} §8(§7To view: §5/doorman <Page>§8)' # 1 = Current Page, 2 = Total Page Count
     unknown-page: '-> §7Page §enot available§7: §f§o{1}'
     no-message: '-> §7Server join message §f§o{1,number,#} §enot configured' # 1 = Index
