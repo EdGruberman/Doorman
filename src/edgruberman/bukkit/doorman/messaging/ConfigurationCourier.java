@@ -1,10 +1,5 @@
 package edgruberman.bukkit.doorman.messaging;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,7 +10,7 @@ import org.bukkit.plugin.Plugin;
  * uses message patterns stored in a {@link org.bukkit.configuration.ConfigurationSection ConfigurationSection}
  *
  * @author EdGruberman (ed@rjump.com)
- * @version 4.4.1
+ * @version 5.0.0
  */
 public class ConfigurationCourier extends Courier {
 
@@ -32,27 +27,13 @@ public class ConfigurationCourier extends Courier {
         return this.base;
     }
 
-    /** draft Messages (single for string value, multiple for string list value) */
-    public List<Message> compose(final String key, final Object... arguments) {
-        final List<Message> messages = new ArrayList<Message>();
-
-        if (this.base.isString(key)) {
-            messages.add(this.draft(this.base.getString(key), arguments));
-            return messages;
-        }
-
-        if (!this.base.isList(key)) {
-            this.plugin.getLogger().log(Level.FINEST, "Unusable Message pattern \"{1}\" at \"{2}{3}{0}\" key", new Object[] { key, this.base.get(key), this.base.getCurrentPath(), this.base.getRoot().options().pathSeparator() });
-            return Collections.emptyList();
-        }
-
-        for (final String pattern : this.base.getStringList(key)) messages.add(this.draft(pattern, arguments));
-        return messages;
-    }
-
-    /** deliver messages to recipients and record log entry for each message (this will not timestamp the message) */
-    public void submit(final Recipients recipients, final List<Message> messages) {
-        for (final Message message : messages) this.submit(recipients, message);
+    /**
+     * preliminary Message construction before formatting for target recipient (timestamp argument prepended if configured)
+     *
+     * @param key path to message text that can contain format elements in base configuration
+     */
+    public Message compose(final String key, final Object... arguments) {
+        return this.draft(this.base.getString(key), arguments);
     }
 
     /**
@@ -66,27 +47,19 @@ public class ConfigurationCourier extends Courier {
     }
 
     public void send(final CommandSender target, final String key, final Object... arguments) {
-        final Recipients recipients = new Individual(target);
-        final List<Message> messages = this.compose(key, arguments);
-        this.submit(recipients, messages);
+        this.sendMessage(target, this.base.getString(key), arguments);
     }
 
     public void broadcast(final String key, final Object... arguments) {
-        final Recipients recipients = new ServerPlayers();
-        final List<Message> messages = this.compose(key, arguments);
-        this.submit(recipients, messages);
+        this.broadcastMessage(this.base.getString(key), arguments);
     }
 
     public void world(final World target, final String key, final Object... arguments) {
-        final Recipients recipients = new WorldPlayers(target);
-        final List<Message> messages = this.compose(key, arguments);
-        this.submit(recipients, messages);
+        this.worldMessage(target, this.base.getString(key), arguments);
     }
 
     public void publish(final String permission, final String key, final Object... arguments) {
-        final Recipients recipients = new PermissionSubscribers(permission);
-        final List<Message> messages = this.compose(key, arguments);
-        this.submit(recipients, messages);
+        this.publishMessage(permission, this.base.getString(key), arguments);
     }
 
 
