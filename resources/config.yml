@@ -4,13 +4,13 @@ language:
     +color-code: '§'
     +console: '{0}' # 0 = Console Name
     greeting: |- # 1 = World Age, 2 = Server Size, 3+ = Switches
-        -> §5==== §7Legitimate Survival (mc.rJump.com)
-        -> §5==== §7World Active: §b{1} §5== §7Size: §b{2}
+        §f-> §5==== §7Legitimate Survival (mc.rJump.com)
+        §f-> §5==== §7World Active: §b{1} §5== §7Size: §b{2}
     declaration: |- # 1 = Joining Player Display Name, 2 = Set, 3 = From Player Display Name, 4 = Text, 5 = Set Age
-        §r-> §5§k#§5---------------------------------------------§k#
-        -> §5|§r {4}
-        -> §5|§r      §8{5} ago from <{3}§8>
-        §r-> §5§k#§5---------------------------------------------§k#
+        §f-> §5§k#§5---------------------------------------------§k#
+        §f-> §5|§r {4}
+        §f-> §5|§r      §8{5} ago from <{3}§8>
+        §f-> §5§k#§5---------------------------------------------§k#
     missed: '-> §c* §7You missed messages §8(§7To view: §b/doorman§8)'
     history:
         body: '-> §8{2,date,yyyy MMM dd HH:mm} {1,choice,0#§7|1#§c* §f}{4} §8<§7{3}§8>' # 1 = Missed(0|1), 2 = Set, 3 = From Player Display Name, 4 = Text, 5 = Set Age, 6 = Index
