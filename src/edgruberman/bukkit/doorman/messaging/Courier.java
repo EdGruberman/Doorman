@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
  * handles message delivery and logging
  *
  * @author EdGruberman (ed@rjump.com)
- * @version 5.0.0
+ * @version 5.0.1
  */
 public class Courier {
 
@@ -45,7 +45,10 @@ public class Courier {
         return MessageFormat.format(this.colorize(pattern), arguments);
     }
 
-    /** preliminary Message construction before formatting for target recipient (timestamp argument prepended if configured) */
+    /**
+     * preliminary Message construction before formatting for target recipient (timestamp argument prepended if configured)
+     * @param pattern message text that contains format elements
+     */
     public Message draft(final String pattern, final Object... arguments) {
         final Message.Factory factory = Message.create(this.colorize(pattern), arguments);
         if (this.timestamp) factory.timestamp();
