@@ -13,7 +13,7 @@ import edgruberman.bukkit.doorman.RecordKeeper.Message;
 
 public class History implements CommandExecutor {
 
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 5;
 
     private final RecordKeeper records;
 
@@ -28,7 +28,7 @@ public class History implements CommandExecutor {
 
         final List<Message> history = this.records.getHistory();
 
-        final int bodySize = History.PAGE_SIZE - Main.courier.compose("history|footer").size();
+        final int bodySize = History.PAGE_SIZE - (Main.courier.getBase().getString("history|footer").split("\\n").length);
 
         final int pageTotal = (history.size() / bodySize) + ( history.size() % bodySize > 0 ? 1 : 0 );
         final int pageCurrent = ( args.length >= 1 ? History.parseInt(args[0], 1) : 1 );
@@ -48,7 +48,7 @@ public class History implements CommandExecutor {
             index++;
         }
 
-        Main.courier.send(sender, "history|footer", pageCurrent, pageTotal);
+        Main.courier.send(sender, "history|footer", pageCurrent, pageTotal, ( pageCurrent < pageTotal ? pageCurrent + 1 : 1 ));
         return true;
     }
 
