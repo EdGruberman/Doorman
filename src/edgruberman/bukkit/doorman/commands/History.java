@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import edgruberman.bukkit.doorman.Main;
 import edgruberman.bukkit.doorman.RecordKeeper;
-import edgruberman.bukkit.doorman.RecordKeeper.Message;
+import edgruberman.bukkit.doorman.RecordKeeper.Declaration;
 
 public class History implements CommandExecutor {
 
@@ -26,7 +26,7 @@ public class History implements CommandExecutor {
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         final long lastPlayed = ( sender instanceof Player ? ((Player) sender).getLastPlayed() : System.currentTimeMillis() );
 
-        final List<Message> history = this.records.getHistory();
+        final List<Declaration> history = this.records.getHistory();
 
         final int bodySize = History.PAGE_SIZE - (Main.courier.getBase().getString("history|footer").split("\\n").length);
 
@@ -40,7 +40,7 @@ public class History implements CommandExecutor {
         final int first = (pageCurrent - 1) * bodySize;
         final int last = Math.min(first + bodySize, history.size());
         int index = first;
-        for (final Message message : history.subList(first, last)) {
+        for (final Declaration message : history.subList(first, last)) {
             Main.courier.send(sender, "history|body", ( message.set > lastPlayed ? 1 : 0 )
                     , message.set, message.from, message.text
                     , RecordKeeper.duration(System.currentTimeMillis() - message.set)

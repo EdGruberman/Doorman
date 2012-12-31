@@ -17,13 +17,15 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import edgruberman.bukkit.doorman.messaging.Message;
+
 /** manages declaration history and display */
 public final class RecordKeeper {
 
     private final Plugin plugin;
     private final File configFile;
     private final FileConfiguration config;
-    private final List<Message> history = new ArrayList<Message>();
+    private final List<Declaration> history = new ArrayList<Declaration>();
 
     RecordKeeper(final Plugin plugin) {
         this.plugin = plugin;
@@ -45,33 +47,33 @@ public final class RecordKeeper {
             final String from = history.getString(setKey + ".from");
             final String text = history.getString(setKey + ".text");
 
-            this.history.add(new Message(set, from, text));
+            this.history.add(new Declaration(set, from, text));
         }
 
-        Collections.sort(this.history, Message.NEWEST_FIRST);
+        Collections.sort(this.history, Declaration.NEWEST_FIRST);
     }
 
-    public List<Message> getHistory() {
+    public List<Declaration> getHistory() {
         return Collections.unmodifiableList(this.history);
     }
 
     public void add(final long set, final String from, final String text) {
-        this.history.add(new Message(set, from, text));
-        Collections.sort(this.history, Message.NEWEST_FIRST);
+        this.history.add(new Declaration(set, from, text));
+        Collections.sort(this.history, Declaration.NEWEST_FIRST);
         this.save();
     }
 
-    public void declare(final CommandSender recipient) {
-        this.declare(recipient, this.history.get(0));
+    public Message declare(final CommandSender recipient) {
+        return this.declare(recipient, this.history.get(0));
     }
 
-    public void declare(final CommandSender recipient, final Message message) {
+    public Message declare(final CommandSender recipient, final Declaration message) {
         final String name = (recipient instanceof Player ? ((Player) recipient).getDisplayName() : recipient.getName());
-        Main.courier.send(recipient, "declaration", name, message.set, message.from, message.text, RecordKeeper.duration(System.currentTimeMillis() - message.set));
+        return Main.courier.compose("declaration", name, message.set, message.from, message.text, RecordKeeper.duration(System.currentTimeMillis() - message.set));
     }
 
     private void save() {
-        for (final Message message : this.history) {
+        for (final Declaration message : this.history) {
             final String key = (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz")).format(new Date(message.set));
             this.config.set(key + ".from", message.from);
             this.config.set(key + ".text", message.text);
@@ -100,7 +102,7 @@ public final class RecordKeeper {
 
 
 
-    public final static class Message {
+    public final static class Declaration {
 
         static final NewestFirst NEWEST_FIRST = new NewestFirst();
 
@@ -108,16 +110,16 @@ public final class RecordKeeper {
         public final String from;
         public final String text;
 
-        private Message(final long set, final String from, final String text) {
+        private Declaration(final long set, final String from, final String text) {
             this.set = set;
             this.from = from;
             this.text = text;
         }
 
-        private static class NewestFirst implements Comparator<Message> {
+        private static class NewestFirst implements Comparator<Declaration> {
 
             @Override
-            public int compare(final Message o1, final Message o2) {
+            public int compare(final Declaration o1, final Declaration o2) {
                 return o2.set.compareTo(o1.set);
             }
 

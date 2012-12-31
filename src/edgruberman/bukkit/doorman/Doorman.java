@@ -18,6 +18,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.Plugin;
 
+import edgruberman.bukkit.doorman.messaging.Individual;
+import edgruberman.bukkit.doorman.messaging.Message;
+
 /** manages player join messages */
 public final class Doorman implements Listener, Runnable {
 
@@ -60,18 +63,21 @@ public final class Doorman implements Listener, Runnable {
         args.add(serverAge);
         args.add(Doorman.readableFileSize(serverSize));
         for (final String argument : this.arguments) args.add(this.switchFor(join.getPlayer(), argument));
-        Main.courier.send(join.getPlayer(), "greeting", args.toArray());
+        final Message message = Main.courier.compose("greeting", args.toArray());
 
         // declaration - do not show if player has already received this message in the last grace period
-        if (this.records.getHistory().size() == 0) return;
-        final Long last = this.lastDeclaration.get(join.getPlayer().getName());
-        if ((last != null) && ((System.currentTimeMillis() - last) <= this.grace)) return;
-        this.records.declare(join.getPlayer());
-        this.updateLast(join.getPlayer().getName());
+        if (this.records.getHistory().size() > 0) {
+            final Long last = this.lastDeclaration.get(join.getPlayer().getName());
+            if ((last != null) && ((System.currentTimeMillis() - last) <= this.grace)) return;
+            message.append(this.records.declare(join.getPlayer()));
+            this.updateLast(join.getPlayer().getName());
+        }
 
         // missed - excluding the declaration just sent, check if at least the previous one was missed
         if (this.records.getHistory().size() > 1 && join.getPlayer().getLastPlayed() < this.records.getHistory().get(1).set)
-            Main.courier.send(join.getPlayer(), "missed");
+            message.append(Main.courier.compose("missed"));
+
+        Main.courier.submit(new Individual(join.getPlayer()), message);
     }
 
     @EventHandler
