@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import edgruberman.bukkit.doorman.Doorman;
 import edgruberman.bukkit.doorman.Main;
 import edgruberman.bukkit.doorman.RecordKeeper;
+import edgruberman.bukkit.doorman.messaging.Individual;
 
 public final class Show implements CommandExecutor {
 
@@ -27,7 +28,7 @@ public final class Show implements CommandExecutor {
             return true;
         }
 
-        this.records.declare(sender, this.records.getHistory().get(index));
+        Main.courier.submit(new Individual(sender), this.records.declare(sender, this.records.getHistory().get(index)));
         if (index == 0) this.doorman.updateLast(sender.getName());
         return true;
     }
