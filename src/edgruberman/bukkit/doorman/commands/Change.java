@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import edgruberman.bukkit.doorman.Doorman;
 import edgruberman.bukkit.doorman.Main;
 import edgruberman.bukkit.doorman.RecordKeeper;
+import edgruberman.bukkit.doorman.messaging.Individual;
 
 public final class Change implements CommandExecutor {
 
@@ -38,12 +39,12 @@ public final class Change implements CommandExecutor {
         this.doorman.clearLast();
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
-            this.records.declare(player);
+            Main.courier.submit(new Individual(player), this.records.declare(player));
             this.doorman.updateLast(player.getName());
         }
 
         if (!(sender instanceof Player)) {
-            this.records.declare(sender);
+            Main.courier.submit(new Individual(sender), this.records.declare(sender));
             this.doorman.updateLast(sender.getName());
         }
 
