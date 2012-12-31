@@ -25,7 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author EdGruberman (ed@rjump.com)
- * @version 1.3.0
+ * @version 1.3.1
  */
 public class CustomPlugin extends JavaPlugin {
 
@@ -40,6 +40,10 @@ public class CustomPlugin extends JavaPlugin {
     private final Map<String, Version> configurationMinimums = new HashMap<String, Version>();
     private FileConfiguration config = null;
     private char pathSeparator = '.';
+
+    public void putConfigMinimum(final String version) {
+        this.putConfigMinimum(CustomPlugin.CONFIGURATION_FILE, version);
+    }
 
     public void putConfigMinimum(final String resource, final String version) {
         this.configurationMinimums.put(resource, new Version(version));

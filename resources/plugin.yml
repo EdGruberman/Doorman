@@ -6,7 +6,7 @@ website: http://github.com/EdGruberman/Doorman
 main: edgruberman.bukkit.doorman.Main
 commands:
     'doorman:history':
-        aliases: [doorman, doorman.history]
+        aliases: [doorman.history, doorman]
         description: View server join messages
         permission: doorman.history
         usage: /<command>[ <Page>]

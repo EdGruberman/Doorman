@@ -24,7 +24,7 @@ public final class Main extends CustomPlugin {
 
     @Override
     public void onLoad() {
-        this.putConfigMinimum(CustomPlugin.CONFIGURATION_FILE, "1.2.1");
+        this.putConfigMinimum("1.3.0");
         this.setPathSeparator('|');
     }
 
