@@ -68,9 +68,10 @@ public final class Doorman implements Listener, Runnable {
         // declaration - do not show if player has already received this message in the last grace period
         if (this.records.getHistory().size() > 0) {
             final Long last = this.lastDeclaration.get(join.getPlayer().getName());
-            if ((last != null) && ((System.currentTimeMillis() - last) <= this.grace)) return;
-            message.append(this.records.declare(join.getPlayer()));
-            this.updateLast(join.getPlayer().getName());
+            if ((last != null) && ((System.currentTimeMillis() - last) > this.grace)) {
+                message.append(this.records.declare(join.getPlayer()));
+                this.updateLast(join.getPlayer().getName());
+            }
         }
 
         // missed - excluding the declaration just sent, check if at least the previous one was missed
