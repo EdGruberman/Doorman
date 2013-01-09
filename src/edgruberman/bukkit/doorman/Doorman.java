@@ -50,10 +50,15 @@ public final class Doorman implements Listener, Runnable {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent join) {
+        Message message = null;
+
         // headers - always displayed, if player has permission, each on separate line
         for (final String header : this.headers) {
             final Object value = this.switchFor(join.getPlayer(), header);
-            if (value.toString().length() > 0) Main.courier.sendMessage(join.getPlayer(), "{1}", value);
+            if (value.toString().length() > 0) {
+                final Message prefix = Main.courier.draft("{1}\n", value);
+                if (message == null) { message = prefix; } else { message.append(prefix); }
+            }
         }
 
         // greeting - always displayed, switches appended as arguments, empty strings if player does not have permission
@@ -63,12 +68,13 @@ public final class Doorman implements Listener, Runnable {
         args.add(serverAge);
         args.add(Doorman.readableFileSize(serverSize));
         for (final String argument : this.arguments) args.add(this.switchFor(join.getPlayer(), argument));
-        final Message message = Main.courier.compose("greeting", args.toArray());
+        final Message greeting = Main.courier.compose("greeting", args.toArray());
+        if (message == null) { message = greeting; } else { message.append(greeting); }
 
         // declaration - do not show if player has already received this message in the last grace period
         if (this.records.getHistory().size() > 0) {
             final Long last = this.lastDeclaration.get(join.getPlayer().getName());
-            if ((last != null) && ((System.currentTimeMillis() - last) > this.grace)) {
+            if ((last == null) || ((System.currentTimeMillis() - last) > this.grace)) {
                 message.append(this.records.declare(join.getPlayer()));
                 this.updateLast(join.getPlayer().getName());
             }
