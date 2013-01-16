@@ -4,7 +4,7 @@ language:
   +color-code: '§'
   +console: '{0}' # 0 = Console Name
   greeting: |- # 1 = World Age, 2 = Server Size, 3+ = Switches
-    §f-> §5==== §7Legitimate Survival (mc.rJump.com)
+    §f-> §5==== §7§oAlmost Vanilla§7 Survival (mc.rJump.com)
     §f-> §5==== §7World Active: §b{1} §5== §7Size: §b{2}
   declaration: |- # 1 = Joining Player Display Name, 2 = Set, 3 = From Player Display Name, 4 = Text, 5 = Set Age
     
