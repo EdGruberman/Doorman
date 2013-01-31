@@ -12,12 +12,12 @@ import edgruberman.bukkit.doorman.Main;
 import edgruberman.bukkit.doorman.RecordKeeper;
 import edgruberman.bukkit.doorman.messaging.Individual;
 
-public final class Change implements CommandExecutor {
+public final class Add implements CommandExecutor {
 
     private final Doorman doorman;
     private final RecordKeeper records;
 
-    public Change(final Doorman doorman, final RecordKeeper records) {
+    public Add(final Doorman doorman, final RecordKeeper records) {
         this.doorman = doorman;
         this.records = records;
     }
@@ -29,7 +29,7 @@ public final class Change implements CommandExecutor {
             return false;
         }
 
-        final String text = Change.join(args, " ");
+        final String text = Add.join(args, " ");
         if (text == null) return false;
 
         final long set = System.currentTimeMillis();

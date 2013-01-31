@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 
-import edgruberman.bukkit.doorman.commands.Change;
+import edgruberman.bukkit.doorman.commands.Add;
 import edgruberman.bukkit.doorman.commands.History;
 import edgruberman.bukkit.doorman.commands.Reload;
 import edgruberman.bukkit.doorman.commands.Show;
@@ -46,7 +46,7 @@ public final class Main extends CustomPlugin {
 
         this.getCommand("doorman:history").setExecutor(new History(records));
         this.getCommand("doorman:show").setExecutor(new Show(doorman, records));
-        this.getCommand("doorman:change").setExecutor(new Change(doorman, records));
+        this.getCommand("doorman:change").setExecutor(new Add(doorman, records));
         this.getCommand("doorman:reload").setExecutor(new Reload(this));
     }
 

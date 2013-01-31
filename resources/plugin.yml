@@ -15,10 +15,10 @@ commands:
         description: Formats server join message
         permission: doorman.show
         usage: /<command>[ <Index>]
-    'doorman:change':
-        aliases: [doorman.change]
-        description: Change the server join message
-        permission: doorman.change
+    'doorman:add':
+        aliases: [doorman.add]
+        description: Add a new declaration
+        permission: doorman.add
         usage: /<command> <Message>
     'doorman:reload':
         description: Reload Doorman plugin
@@ -30,7 +30,7 @@ permissions:
         default: op
         children:
             doorman.user: true
-            doorman.change: true
+            doorman.add: true
             doorman.reload: true
     doorman.user:
         description: Can use basic features of plugin
@@ -41,8 +41,8 @@ permissions:
     doorman.show:
         description: Can use show command
         default: false
-    doorman.change:
-        description: Can use change command
+    doorman.add:
+        description: Can use add command
         default: false
     doorman.history:
         description: Can use history command
