@@ -1,29 +1,29 @@
 name: Doorman
 version: @VERSION@
-description: Sends players messages when they join the game
+description: Sends players messages when they join the server
 author: EdGruberman (ed@rjump.com)
 website: http://github.com/EdGruberman/Doorman
 main: edgruberman.bukkit.doorman.Main
 commands:
     'doorman:history':
         aliases: [doorman.history, doorman]
-        description: View server join messages
+        description: View server declarations
         permission: doorman.history
-        usage: /<command>[ <Page>]
+        usage: '§f-> §7Usage: §b/<command> §3[ §b§o<Page>§3]'
     'doorman:show':
         aliases: [doorman.show, motd]
-        description: Formats server join message
+        description: Display current server declaration
         permission: doorman.show
-        usage: /<command>[ <Index>]
+        usage: '§f-> §7Usage: §b/<command> §3[ §b§o<Index>§3]'
     'doorman:add':
         aliases: [doorman.add]
-        description: Add a new declaration
+        description: Add a new server declaration
         permission: doorman.add
-        usage: /<command> <Message>
+        usage: '§f-> §7Usage: §b/<command> §o<Message>'
     'doorman:reload':
         description: Reload Doorman plugin
         permission: doorman.reload
-        usage: /<command>
+        usage: '§f-> §7Usage: §b/<command>'
 permissions:
     doorman.admin:
         description: Can use all features of plugin
