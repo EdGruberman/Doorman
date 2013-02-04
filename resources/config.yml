@@ -1,7 +1,7 @@
 log-level: INFO
 declaration-grace: 3600 # Seconds before declaration is displayed again after reconnecting
 language:
-  +color-code: '§'
+  +format-code: '§'
   +console: '{0}' # 0 = Console Name
   greeting: |- # 1 = World Age, 2 = Server Size, 3+ = Switches
     §f-> §5==== §7§oAlmost Vanilla§7 Survival (mc.rJump.com)

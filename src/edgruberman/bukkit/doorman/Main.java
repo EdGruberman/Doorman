@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 
 import edgruberman.bukkit.doorman.commands.Add;
+import edgruberman.bukkit.doorman.commands.Edit;
 import edgruberman.bukkit.doorman.commands.History;
 import edgruberman.bukkit.doorman.commands.Reload;
 import edgruberman.bukkit.doorman.commands.Show;
@@ -24,14 +25,14 @@ public final class Main extends CustomPlugin {
 
     @Override
     public void onLoad() {
-        this.putConfigMinimum("1.3.0");
+        this.putConfigMinimum("1.4.0");
         this.setPathSeparator('|');
     }
 
     @Override
     public void onEnable() {
         this.reloadConfig();
-        Main.courier = ConfigurationCourier.Factory.create(this).setPath("language").setColorCode("+color-code").build();
+        Main.courier = ConfigurationCourier.Factory.create(this).setPath("language").setFormatCode("+format-code").build();
 
         Long grace = this.getConfig().getLong("declaration-grace", -1);
         if (grace != -1) grace = TimeUnit.SECONDS.toMillis(grace);
@@ -46,7 +47,8 @@ public final class Main extends CustomPlugin {
 
         this.getCommand("doorman:history").setExecutor(new History(records));
         this.getCommand("doorman:show").setExecutor(new Show(doorman, records));
-        this.getCommand("doorman:change").setExecutor(new Add(doorman, records));
+        this.getCommand("doorman:add").setExecutor(new Add(doorman, records));
+        this.getCommand("doorman:edit").setExecutor(new Edit(doorman, records));
         this.getCommand("doorman:reload").setExecutor(new Reload(this));
     }
 

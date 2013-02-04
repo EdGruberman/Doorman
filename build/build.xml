@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <project name="Bukkit Plugin" default="default">
-    <description>Bukkit Plugin Standard Build Management v4.0.1</description>
+    <description>Bukkit Plugin Standard Build Management v4.1.0</description>
 
     <target name="debug">
         <echoproperties />
@@ -17,7 +17,8 @@
     <property name="build.dir" location="../build" />
     <property name="stage.dir" location="${build.dir}/stage" />
     <property name="dist.dir" location="../dist" />
-    <property name="install.dir" location="${bukkit.test}" />
+    <property name="plugins.dir" location="${bukkit.test}" />
+    <property name="update.dir" location="${plugins.dir}/update" />
 
     <property name="version.properties" location="${build.dir}/version.properties" />
     <property prefix="plugin" file="${build.dir}/plugin.properties" />
@@ -93,7 +94,7 @@
         <antcall target="install" />
     </target>
 
-    <target name="major" description="+1.0.0a0  |  Increment major version and reset life cycle to alpha (existing functionality changed, significant redesign)">
+    <target name="major" description="+.0.0a0  |  Increment major version and reset life cycle to alpha (existing functionality changed, significant redesign)">
         <antcall target="-validate" />
         <propertyfile file="${version.properties}">
             <entry key="major" operation="+" value="1" type="int" />
@@ -174,12 +175,22 @@
                 <attribute name="Class-Path" value="${plugin.class-path}" />
             </manifest>
         </jar>
-        
+
         <antcall target="-clean" />
     </target>
 
     <target name="install" description="Copy built Bukkit plugin JAR to local test server">
-        <copy file="${plugin.jar}" todir="${install.dir}" verbose="true" />
+        <available property="plugin.exists" file="${plugins.dir}/${plugin.name}.jar"/>
+        <antcall target="-install-plugins" />
+        <antcall target="-install-update" />
+    </target>
+
+    <target name="-install-plugins" unless="plugin.exists" description="Copy built Bukkit plugin JAR to local test server plugins directory">
+        <copy file="${plugin.jar}" todir="${plugins.dir}" verbose="true" />
+    </target>
+
+    <target name="-install-update" if="plugin.exists" description="Copy built Bukkit plugin JAR to local test server update directory">
+        <copy file="${plugin.jar}" todir="${update.dir}" verbose="true" />
     </target>
 
 </project>
