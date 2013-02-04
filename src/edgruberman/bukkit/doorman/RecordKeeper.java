@@ -64,10 +64,8 @@ public final class RecordKeeper {
     }
 
     public void edit(final long submitted, final String from, final String text) {
-        this.history.remove(this.history.size() - 1);
-        this.history.add(new Declaration(submitted, from, text));
-        Collections.sort(this.history, Declaration.NEWEST_FIRST);
-        this.save();
+        this.history.remove(0);
+        this.add(submitted, from, text);
     }
 
     public Message declare(final CommandSender recipient) {
