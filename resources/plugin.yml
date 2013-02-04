@@ -17,8 +17,13 @@ commands:
         usage: '§f-> §7Usage: §b/<command> §3[ §b§o<Index>§3]'
     'doorman:add':
         aliases: [doorman.add]
-        description: Add a new server declaration
+        description: Append a new server declaration
         permission: doorman.add
+        usage: '§f-> §7Usage: §b/<command> §o<Message>'
+    'doorman:edit':
+        aliases: [doorman.edit]
+        description: Replace existing server declaration
+        permission: doorman.edit
         usage: '§f-> §7Usage: §b/<command> §o<Message>'
     'doorman:reload':
         description: Reload Doorman plugin
@@ -31,6 +36,7 @@ permissions:
         children:
             doorman.user: true
             doorman.add: true
+            doorman.edit: true
             doorman.reload: true
     doorman.user:
         description: Can use basic features of plugin
@@ -43,6 +49,9 @@ permissions:
         default: false
     doorman.add:
         description: Can use add command
+        default: false
+    doorman.edit:
+        description: Can use edit command
         default: false
     doorman.history:
         description: Can use history command

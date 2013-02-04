@@ -57,8 +57,15 @@ public final class RecordKeeper {
         return Collections.unmodifiableList(this.history);
     }
 
-    public void add(final long set, final String from, final String text) {
-        this.history.add(new Declaration(set, from, text));
+    public void add(final long submitted, final String from, final String text) {
+        this.history.add(new Declaration(submitted, from, text));
+        Collections.sort(this.history, Declaration.NEWEST_FIRST);
+        this.save();
+    }
+
+    public void edit(final long submitted, final String from, final String text) {
+        this.history.remove(this.history.size() - 1);
+        this.history.add(new Declaration(submitted, from, text));
         Collections.sort(this.history, Declaration.NEWEST_FIRST);
         this.save();
     }
