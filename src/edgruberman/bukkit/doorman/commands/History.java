@@ -28,7 +28,7 @@ public class History implements CommandExecutor {
 
         final List<Declaration> history = this.records.getHistory();
 
-        final int bodySize = History.PAGE_SIZE - (Main.courier.getBase().getString("history|footer").split("\\n").length);
+        final int bodySize = History.PAGE_SIZE - (Main.courier.getBase().getString("history.footer").split("\\n").length);
 
         final int pageTotal = (history.size() / bodySize) + ( history.size() % bodySize > 0 ? 1 : 0 );
         final int pageCurrent = ( args.length >= 1 ? History.parseInt(args[0], 1) : 1 );
@@ -41,14 +41,14 @@ public class History implements CommandExecutor {
         final int last = Math.min(first + bodySize, history.size());
         int index = first;
         for (final Declaration message : history.subList(first, last)) {
-            Main.courier.send(sender, "history|body", ( message.set > lastPlayed ? 1 : 0 )
+            Main.courier.send(sender, "history.body", ( message.set > lastPlayed ? 1 : 0 )
                     , message.set, message.from, message.text
                     , RecordKeeper.duration(System.currentTimeMillis() - message.set)
                     , index);
             index++;
         }
 
-        Main.courier.send(sender, "history|footer", pageCurrent, pageTotal, ( pageCurrent < pageTotal ? pageCurrent + 1 : 1 ));
+        Main.courier.send(sender, "history.footer", pageCurrent, pageTotal, ( pageCurrent < pageTotal ? pageCurrent + 1 : 1 ));
         return true;
     }
 

@@ -7,13 +7,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -40,9 +37,8 @@ public final class Main extends CustomPlugin {
 
     @Override
     public void onLoad() {
-        this.putConfigMinimum("1.5.0a4");
-        this.putConfigMinimum("language.yml", "1.5.0a0");
-        this.setPathSeparator('|'); // enables referencing node names with periods in it
+        this.putConfigMinimum("1.5.0");
+        this.putConfigMinimum("language.yml", "1.5.0");
 
         try {
             this.extract("joda-time-2.2.jar");
@@ -65,12 +61,12 @@ public final class Main extends CustomPlugin {
         this.reloadConfig();
         Main.courier = ConfigurationCourier.create(this).setBase(this.loadConfig("language.yml")).setFormatCode("format-code").build();
 
+        final ConfigurationSection switches = this.getConfig().getConfigurationSection("switches");
+        final List<MessageSwitch> headers = this.parseSwitches(switches, "headers");
+        final List<MessageSwitch> arguments = this.parseSwitches(switches, "arguments");
+
         Long grace = this.getConfig().getLong("declaration-grace", -1);
         if (grace != -1) grace = TimeUnit.SECONDS.toMillis(grace);
-
-        final Map<String, Object> switches = new HashMap<String, Object>();
-        final ConfigurationSection section = this.getConfig().getConfigurationSection("switches");
-        if (section != null) switches.putAll(section.getValues(false));
 
         Date worldStart;
         try {
@@ -81,9 +77,8 @@ public final class Main extends CustomPlugin {
         }
 
         final RecordKeeper records = new RecordKeeper(this);
-        final Doorman doorman = new Doorman(this, records, grace, switches
-                , this.parseGreetingSwitches(switches.keySet(), "greeting|headers"), this.parseGreetingSwitches(switches.keySet(), "greeting|arguments")
-                , worldStart);
+        final Doorman doorman = new Doorman(this, records, grace, headers, arguments, worldStart);
+        this.getLogger().log(Level.CONFIG, "History: {0}; Grace: {1}; Headers: {2}; Arguments: {3}; worldStart: {4}", new Object[] { records.getHistory().size(), grace, headers.size(), arguments.size(), worldStart });
 
         this.getCommand("doorman:history").setExecutor(new History(records));
         this.getCommand("doorman:show").setExecutor(new Show(doorman, records));
@@ -92,18 +87,21 @@ public final class Main extends CustomPlugin {
         this.getCommand("doorman:reload").setExecutor(new Reload(this));
     }
 
-    private List<String> parseGreetingSwitches(final Collection<String> recognized, final String path) {
-        final List<String> values = this.getConfig().getStringList(path);
-        if (values == null) return Collections.emptyList();
+    private List<MessageSwitch> parseSwitches(final ConfigurationSection switches, final String path) {
+        if (switches == null) return Collections.emptyList();
 
-        final Iterator<String> it = values.iterator();
-        while (it.hasNext()) {
-            final String name = it.next();
-            if (recognized.contains(name)) continue;
-            this.getLogger().warning("Unrecognized switch specified in " + path + ": " + name);
-            it.remove();
+        final ConfigurationSection section = switches.getConfigurationSection(path);
+        if (section == null) return Collections.emptyList();
+
+        final List<MessageSwitch> result = new ArrayList<MessageSwitch>();
+
+        for (final String name : section.getKeys(false)) {
+            final ConfigurationSection entry = section.getConfigurationSection(name);
+            final MessageSwitch ms = new MessageSwitch(entry.getString("permission"), entry.getString("true"), entry.getString("false"));
+            result.add(ms);
         }
-        return values;
+
+        return result;
     }
 
     @Override
