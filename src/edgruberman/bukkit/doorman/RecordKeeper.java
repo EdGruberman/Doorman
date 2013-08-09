@@ -3,7 +3,6 @@ package edgruberman.bukkit.doorman;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,7 +18,7 @@ import org.bukkit.plugin.Plugin;
 
 import edgruberman.bukkit.doorman.messaging.Message;
 
-/** manages declaration history and display */
+/** stores declarations */
 public final class RecordKeeper {
 
     private final Plugin plugin;
@@ -38,7 +37,7 @@ public final class RecordKeeper {
         for (final String setKey : history.getKeys(false)) {
             long set;
             try {
-                set = (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz")).parse(setKey).getTime();
+                set = Main.DATE_FORMAT.parse(setKey).getTime();
             } catch (final ParseException e) {
                 this.plugin.getLogger().warning("Unable to parse declaration set: " + setKey + "; " + e);
                 continue;
@@ -79,7 +78,7 @@ public final class RecordKeeper {
 
     private void save() {
         for (final Declaration message : this.history) {
-            final String key = (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz")).format(new Date(message.set));
+            final String key = Main.DATE_FORMAT.format(new Date(message.set));
             this.config.set(key + ".from", message.from);
             this.config.set(key + ".text", message.text);
         }

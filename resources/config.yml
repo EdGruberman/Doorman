@@ -1,3 +1,4 @@
 log-level: INFO
 declaration-grace: 3600 # Seconds before declaration is displayed again after reconnecting
+world-start: 2012-03-12T15:30:38MST
 version: @VERSION@

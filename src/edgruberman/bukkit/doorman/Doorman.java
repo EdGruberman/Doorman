@@ -3,6 +3,7 @@ package edgruberman.bukkit.doorman;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,11 +18,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.Plugin;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 import edgruberman.bukkit.doorman.messaging.Message;
 import edgruberman.bukkit.doorman.messaging.Recipients;
 
-/** manages player join messages */
+/** delivers player join messages */
 public final class Doorman implements Listener, Runnable {
 
     private static final long TICKS_PER_SECOND = 20;
@@ -36,14 +39,16 @@ public final class Doorman implements Listener, Runnable {
     private final List<String> arguments  = new ArrayList<String>();
     private final Map<String, Long> lastDeclaration = new HashMap<String, Long>();
     private final Plugin plugin;
+    private final LocalDate worldStart;
 
-    Doorman(final Plugin plugin, final RecordKeeper records, final long grace, final Map<String, Object> switches, final List<String> headers, final List<String> arguments) {
+    Doorman(final Plugin plugin, final RecordKeeper records, final long grace, final Map<String, Object> switches, final List<String> headers, final List<String> arguments, final Date worldStart) {
         this.plugin = plugin;
         this.records = records;
         this.grace = grace;
         this.switches.putAll(switches);
         this.headers.addAll(headers);
         this.arguments.addAll(arguments);
+        this.worldStart = LocalDate.fromDateFields(worldStart);
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -62,10 +67,10 @@ public final class Doorman implements Listener, Runnable {
         }
 
         // greeting - always displayed, switches appended as arguments, empty strings if player does not have permission
-        final String serverAge = Bukkit.getWorlds().get(0).getFullTime() / 20 / 86400 + " days";
+        final int worldAge = Days.daysBetween(this.worldStart, LocalDate.now()).getDays();
         long serverSize = 0; for (final World world : Bukkit.getWorlds()) serverSize += Doorman.directorySize(world.getWorldFolder());
         final List<Object> args = new ArrayList<Object>();
-        args.add(serverAge);
+        args.add(worldAge);
         args.add(Doorman.readableFileSize(serverSize));
         for (final String argument : this.arguments) args.add(this.switchFor(join.getPlayer(), argument));
         final Message greeting = Main.courier.compose("greeting", args.toArray());

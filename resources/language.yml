@@ -1,8 +1,8 @@
 format-code: '§'
 console: '{0}' # 0 = console name
-greeting: |- # 0 = generated, 1 = world age, 2 = server size, 3+ = switches
+greeting: |- # 0 = generated, 1 = world age in days, 2 = server size, 3+ = switches
   §f-> §5==== §7§oAlmost Vanilla§7 Survival (mc.rJump.com)
-  §f-> §5==== §7World Active: §b{1} §5== §7Size: §b{2}
+  §f-> §5==== §7World Active: §b{1} days §5== §7Size: §b{2}
 declaration: |- # 0 = generated, 1 = recipient, 2 = set, 3 = author, 4 = text, 5 = set age
   
   §f-> §5§k#§5---------------------------------------------§k#
