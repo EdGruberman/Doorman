@@ -33,7 +33,7 @@ public class History implements CommandExecutor {
         final int pageTotal = (history.size() / bodySize) + ( history.size() % bodySize > 0 ? 1 : 0 );
         final int pageCurrent = ( args.length >= 1 ? History.parseInt(args[0], 1) : 1 );
         if (pageCurrent <= 0 || pageCurrent > pageTotal) {
-            Main.courier.send(sender, "unknown-page", pageCurrent);
+            Main.courier.send(sender, "unknown-argument", "page", 0, pageCurrent);
             return false;
         }
 

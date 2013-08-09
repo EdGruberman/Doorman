@@ -1,0 +1,22 @@
+format-code: '§'
+console: '{0}' # 0 = console name
+greeting: |- # 0 = generated, 1 = world age, 2 = server size, 3+ = switches
+  §f-> §5==== §7§oAlmost Vanilla§7 Survival (mc.rJump.com)
+  §f-> §5==== §7World Active: §b{1} §5== §7Size: §b{2}
+declaration: |- # 0 = generated, 1 = recipient, 2 = set, 3 = author, 4 = text, 5 = set age
+  
+  §f-> §5§k#§5---------------------------------------------§k#
+  §f-> §5|§r {4}
+  §f-> §5|§r      §8{5} ago from <{3}§8>
+  §f-> §5§k#§5---------------------------------------------§k#
+missed: |-
+  
+  §f-> §c* §7You §emissed declarations §8(§7To view: §b/doorman§8)'
+history:
+  body: '-> §8{2,date,yyyy MMM dd HH:mm} {1,choice,0#§7|1#§c* §f}{4} §8<§7{3}§8>' # 0 = generated, 1 = missed(0|1), 2 = set, 3 = author, 4 = text, 5 = set age, 6 = index
+  footer: '-> §8Page §7§l{1} §8of §7{2} §8(§7To view next: §b/doorman {3}§8)' # 0 = generated, 1 = current page, 2 = total page count, 3 = next page
+no-message: '-> §7Server join message §f§o{1,number,#} §enot configured' # 0 = generated, 1 = index
+reload: '§f-> §2Reloaded §7{1} plugin' # 0 = generated, 1 = plugin name
+requires-argument: '§f-> §cMissing §7required argument§8: §b{2,choice,0#§o|1#§l}{1}' # 0 = generated, 1 = argument name, 2 = literal(0|1)
+unknown-argument: '§f-> §eUnknown§f value for §b{2,choice,0#§o|1#§l}{1}§8: §f{3}' # 0 = generated, 1 = argument name, 2 = literal(0|1), 3 = argument value
+version: @VERSION@

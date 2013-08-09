@@ -16,7 +16,7 @@ import edgruberman.bukkit.doorman.commands.Edit;
 import edgruberman.bukkit.doorman.commands.History;
 import edgruberman.bukkit.doorman.commands.Reload;
 import edgruberman.bukkit.doorman.commands.Show;
-import edgruberman.bukkit.doorman.messaging.ConfigurationCourier;
+import edgruberman.bukkit.doorman.messaging.Courier.ConfigurationCourier;
 import edgruberman.bukkit.doorman.util.CustomPlugin;
 
 public final class Main extends CustomPlugin {
@@ -25,14 +25,15 @@ public final class Main extends CustomPlugin {
 
     @Override
     public void onLoad() {
-        this.putConfigMinimum("1.4.0");
-        this.setPathSeparator('|');
+        this.putConfigMinimum("1.5.0a0");
+        this.putConfigMinimum("language.yml", "1.5.0a0");
+        this.setPathSeparator('|'); // enables referencing node names with periods in it
     }
 
     @Override
     public void onEnable() {
         this.reloadConfig();
-        Main.courier = ConfigurationCourier.Factory.create(this).setPath("language").setFormatCode("+format-code").build();
+        Main.courier = ConfigurationCourier.create(this).setBase(this.loadConfig("language.yml")).setFormatCode("format-code").build();
 
         Long grace = this.getConfig().getLong("declaration-grace", -1);
         if (grace != -1) grace = TimeUnit.SECONDS.toMillis(grace);

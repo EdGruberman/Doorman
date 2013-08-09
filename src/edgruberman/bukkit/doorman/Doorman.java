@@ -18,8 +18,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.Plugin;
 
-import edgruberman.bukkit.doorman.messaging.Individual;
 import edgruberman.bukkit.doorman.messaging.Message;
+import edgruberman.bukkit.doorman.messaging.Recipients;
 
 /** manages player join messages */
 public final class Doorman implements Listener, Runnable {
@@ -84,7 +84,7 @@ public final class Doorman implements Listener, Runnable {
         if (this.records.getHistory().size() > 1 && join.getPlayer().getLastPlayed() < this.records.getHistory().get(1).set)
             message.append(Main.courier.compose("missed"));
 
-        Main.courier.submit(new Individual(join.getPlayer()), message);
+        Main.courier.submit(Recipients.Sender.create(join.getPlayer()), message);
     }
 
     @EventHandler

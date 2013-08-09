@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import edgruberman.bukkit.doorman.Doorman;
 import edgruberman.bukkit.doorman.Main;
 import edgruberman.bukkit.doorman.RecordKeeper;
-import edgruberman.bukkit.doorman.messaging.Individual;
+import edgruberman.bukkit.doorman.messaging.Recipients;
 
 public final class Edit implements CommandExecutor {
 
@@ -25,7 +25,7 @@ public final class Edit implements CommandExecutor {
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (args.length == 0) {
-            Main.courier.send(sender, "requires-argument", "<Message>");
+            Main.courier.send(sender, "requires-argument", "message", 0);
             return false;
         }
 
@@ -33,18 +33,18 @@ public final class Edit implements CommandExecutor {
         if (text == null) return false;
 
         final long submitted = System.currentTimeMillis();
-        final String from = (sender instanceof Player ? ((Player) sender).getDisplayName() : Main.courier.format("+console", sender.getName()));
+        final String from = ( sender instanceof Player ? ((Player) sender).getDisplayName() : Main.courier.format("+console", sender.getName()).get(0) );
 
         this.records.edit(submitted, from, ChatColor.translateAlternateColorCodes('&', text));
         this.doorman.clearLast();
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
-            Main.courier.submit(new Individual(player), this.records.declare(player));
+            Main.courier.submit(Recipients.Sender.create(player), this.records.declare(player));
             this.doorman.updateLast(player.getName());
         }
 
         if (!(sender instanceof Player)) {
-            Main.courier.submit(new Individual(sender), this.records.declare(sender));
+            Main.courier.submit(Recipients.Sender.create(sender), this.records.declare(sender));
             this.doorman.updateLast(sender.getName());
         }
 

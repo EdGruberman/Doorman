@@ -9,22 +9,22 @@ commands:
         aliases: [doorman.history, doorman]
         description: View server declarations
         permission: doorman.history
-        usage: '§f-> §7Usage: §b/<command> §3[ §b§o<Page>§3]'
+        usage: '§f-> §7Usage: §b/<command> §3[§opage§3]'
     'doorman:show':
         aliases: [doorman.show, motd]
         description: Display current server declaration
         permission: doorman.show
-        usage: '§f-> §7Usage: §b/<command> §3[ §b§o<Index>§3]'
+        usage: '§f-> §7Usage: §b/<command> §3[§b§oindex§3]'
     'doorman:add':
         aliases: [doorman.add]
         description: Append a new server declaration
         permission: doorman.add
-        usage: '§f-> §7Usage: §b/<command> §o<Message>'
+        usage: '§f-> §7Usage: §b/<command> §3§omessage'
     'doorman:edit':
         aliases: [doorman.edit]
         description: Replace existing server declaration
         permission: doorman.edit
-        usage: '§f-> §7Usage: §b/<command> §o<Message>'
+        usage: '§f-> §7Usage: §b/<command> §3§omessage'
     'doorman:reload':
         description: Reload Doorman plugin
         permission: doorman.reload
