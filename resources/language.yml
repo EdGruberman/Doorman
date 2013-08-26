@@ -11,7 +11,7 @@ declaration: |- # 0 = generated, 1 = recipient, 2 = set, 3 = author, 4 = text, 5
   §f-> §5§k#§5---------------------------------------------§k#
 missed: |-
   
-  §f-> §c* §7You §emissed declarations §8(§7To view: §b/doorman§8)'
+  §f-> §c* §7You §emissed declarations §8(§7To view: §b/doorman§8)
 history:
   body: '-> §8{2,date,yyyy MMM dd HH:mm} {1,choice,0#§7|1#§c* §f}{4} §8<§7{3}§8>' # 0 = generated, 1 = missed(0|1), 2 = set, 3 = author, 4 = text, 5 = set age, 6 = index
   footer: '-> §8Page §7§l{1} §8of §7{2} §8(§7To view next: §b/doorman {3}§8)' # 0 = generated, 1 = current page, 2 = total page count, 3 = next page
