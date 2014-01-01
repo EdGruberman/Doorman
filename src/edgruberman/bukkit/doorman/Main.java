@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import java.util.logging.Level;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.PluginClassLoader;
 
 import edgruberman.bukkit.doorman.commands.Add;
 import edgruberman.bukkit.doorman.commands.Edit;
@@ -119,10 +119,15 @@ public final class Main extends CustomPlugin {
         // first time extraction requires late class path addition
         URL utilityURL;
         try { utilityURL = output.toURI().toURL(); } catch (final MalformedURLException e) { throw new RuntimeException(e); }
+
         final Method getClassLoader = JavaPlugin.class.getDeclaredMethod("getClassLoader");
         getClassLoader.setAccessible(true);
-        final PluginClassLoader loader = (PluginClassLoader) getClassLoader.invoke(this);
-        loader.addURL(utilityURL);
+        final URLClassLoader loader = (URLClassLoader) getClassLoader.invoke(this);
+
+        final Method addURL = URLClassLoader.class.getDeclaredMethod("addURL");
+        addURL.setAccessible(true);
+        addURL.invoke(loader, utilityURL);
+
         return utilityURL;
     }
 
