@@ -22,7 +22,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
 import edgruberman.bukkit.doorman.messaging.Message;
-import edgruberman.bukkit.doorman.messaging.Recipients;
+import edgruberman.bukkit.doorman.messaging.RecipientList;
 
 /** delivers player join messages */
 public final class Doorman implements Listener, Runnable {
@@ -69,7 +69,7 @@ public final class Doorman implements Listener, Runnable {
         args.add(worldAge);
         args.add(Doorman.readableFileSize(serverSize));
         for (final MessageSwitch argument : this.arguments) args.add(argument.valueFor(target));
-        final Message greeting = Main.courier.compose("greeting", args.toArray());
+        final Message greeting = Main.courier.draft("greeting", args.toArray());
         if (message == null) { message = greeting; } else { message.append(greeting); }
 
         // declaration - do not show if player has already received this message in the last grace period
@@ -83,10 +83,10 @@ public final class Doorman implements Listener, Runnable {
 
         // missed - excluding the declaration just sent, check if at least the previous one was missed
         if (this.records.getHistory().size() > 1 && target.getLastPlayed() < this.records.getHistory().get(1).set) {
-            message.append(Main.courier.compose("missed"));
+            message.append(Main.courier.draft("missed"));
         }
 
-        Main.courier.submit(Recipients.Sender.create(target), message);
+        Main.courier.submit(RecipientList.Sender.create(target), message);
     }
 
     @EventHandler

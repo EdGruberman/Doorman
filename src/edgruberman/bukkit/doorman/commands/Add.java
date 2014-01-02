@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import edgruberman.bukkit.doorman.Doorman;
 import edgruberman.bukkit.doorman.Main;
 import edgruberman.bukkit.doorman.RecordKeeper;
-import edgruberman.bukkit.doorman.messaging.Recipients;
+import edgruberman.bukkit.doorman.messaging.RecipientList;
 
 public final class Add implements CommandExecutor {
 
@@ -33,18 +33,18 @@ public final class Add implements CommandExecutor {
         if (text == null) return false;
 
         final long set = System.currentTimeMillis();
-        final String from = ( sender instanceof Player ? ((Player) sender).getDisplayName() : Main.courier.format("console", sender.getName()).get(0) );
+        final String from = ( sender instanceof Player ? ((Player) sender).getDisplayName() : Main.courier.format("console", sender.getName()) );
 
         this.records.add(set, from, ChatColor.translateAlternateColorCodes('&', text));
         this.doorman.clearLast();
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
-            Main.courier.submit(Recipients.Sender.create(player), this.records.declare(player));
+            Main.courier.submit(RecipientList.Sender.create(player), this.records.declare(player));
             this.doorman.updateLast(player.getName());
         }
 
         if (!(sender instanceof Player)) {
-            Main.courier.submit(Recipients.Sender.create(sender), this.records.declare(sender));
+            Main.courier.submit(RecipientList.Sender.create(sender), this.records.declare(sender));
             this.doorman.updateLast(sender.getName());
         }
 

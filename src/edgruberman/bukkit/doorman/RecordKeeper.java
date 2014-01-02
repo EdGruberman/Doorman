@@ -73,7 +73,7 @@ public final class RecordKeeper {
 
     public Message declare(final CommandSender recipient, final Declaration message) {
         final String name = (recipient instanceof Player ? ((Player) recipient).getDisplayName() : recipient.getName());
-        return Main.courier.compose("declaration", name, message.set, message.from, message.text, RecordKeeper.duration(System.currentTimeMillis() - message.set));
+        return Main.courier.draft("declaration", name, message.set, message.from, message.text, RecordKeeper.duration(System.currentTimeMillis() - message.set));
     }
 
     private void save() {

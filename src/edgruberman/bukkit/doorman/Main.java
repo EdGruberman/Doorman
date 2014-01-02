@@ -59,7 +59,7 @@ public final class Main extends CustomPlugin {
         }
 
         this.reloadConfig();
-        Main.courier = ConfigurationCourier.create(this).setBase(this.loadConfig("language.yml")).setFormatCode("format-code").build();
+        Main.courier = ConfigurationCourier.Factory.create(this).setBase(this.loadConfig("language.yml")).setFormatCode("format-code").build();
 
         final ConfigurationSection switches = this.getConfig().getConfigurationSection("switches");
         final List<MessageSwitch> headers = this.parseSwitches(switches, "headers");
